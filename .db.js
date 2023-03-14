@@ -184,3 +184,7 @@ socket.on("User-message", userMessage)
 server.listen(3000, () => {
   console.log('listening on port 3000')
 })
+
+// const div = document.createElement("div")
+// div.classList.add('message') // add('message)
+// div.innerHTML =  `${message}`// text(`${message}`)
