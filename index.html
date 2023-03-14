@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+   <link rel="stylesheet" href="/style.css" class="">
+</head>
+  <body>
+
+     <ul id="chatBox"></ul>
+       <form id="form" action="">
+          <input id="input" autocomplete="off" />
+          <button type="button" id="buttonEle">Send</button>
+     </form>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      // Establish a socket io connection to the server 
+        var socket = io();
+
+        // Query DOM elements
+        var messages = document.querySelector("#chatBox");
+        var form = document.querySelector("#form");
+        var input = document.querySelector("#input");
+        var sendBtn = document.getElementById("buttonEle")
+        // Help function to append message to the chatbot
+      function Message(message , sender){
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message-text",sender);
+          messageElement.textContent = message;
+
+
+        // Create timestamp
+        const timestamp = new Date().toLocaleTimeString()
+         // create span element for timestamp
+         const timestampElement = document.createElement("span")
+         timestampElement.classList.add("timestamp")
+         timestampElement.textContent = timestamp;
+  
+
+        const messageContainer = document.createElement("div")
+        messageContainer.classList.add("message-container");
+        messageContainer.appendChild(messageElement)
+        messageContainer.appendChild(timestampElement)
+        chatBox.appendChild(messageContainer);
+        // Chat Box scrolling Effect 
+        chatBox.scrollTop = chatBox.scrollHeight
+    }
+
+// Handle sending messages
+function sendMassage(){
+        const message =  input.value.trim();
+        if(message === ""){
+          return;
+        }
+
+        Message(message, "user");
+        socket.emit("user-message", message)
+        input.value = "";
+}
+
+// Handle receiving messages from the server 
+socket.on("bot-message", (message) => {
+  Message(message,"bot");
+})
+
+
+// Attach event listeners
+   form.addEventListener("submit", (e) => {
+    e.preventDefault();
+      sendMessage()
+   })
+ 
+
+   sendBtn.addEventListener("click" ,sendMassage)
+
+   input.addEventListener("keydown" , (e) => {
+   if(e.key === "Enter"){
+    e.preventDefault()
+     sendMassage()
+    }
+   })
+
+        // Socket io form event  from socket io document
+  //       form.addEventListener('submit', function(e) {
+  //       e.preventDefault();
+  //       if (input.value) {
+  //         socket.emit('chat message', input.value);
+  //               input.value = '';
+  //   }
+  // });
+
+
+  // socket io   From socket io document
+  // socket.on('chat message', function(msg) {
+  //   var item = document.createElement('li');
+  //   item.textContent = msg;
+  //   messages.appendChild(item);
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // });
+   </script>
+  </body>
+</html>
