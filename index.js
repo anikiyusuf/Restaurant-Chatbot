@@ -1,53 +1,62 @@
-const express = require("express");
+const express = require("express")
 const session = require("express-session");
 const http = require("http");
-const { Server } = require("socket.io");
+const { Server } = require("socket.io")
+require("dotenv").config()
+
 
 const app = express();
-const server = http.createServer(app);
+const server = http.createServer(app)
 const io = new Server(server);
 
-const fastFoods = { 
-  2:"Burger",
+const  PORT = process.env.PORT 
+
+
+// Menu Items object
+const fastFoods = {
+  2:"Combo package",
   3: "Pasta",
   4: "Salad",
   5: "Rice",
   6:"coleslaw"
-};
+}
 
-const orderHistory = [];
+const  orderHistory = [] ;
+
 
 const sessionMiddleware = session({
   secret: "secret-key",
   resave: false,
   saveUninitialized: true,
-});
-
-app.use(express.static("public"));
-app.use(sessionMiddleware);
-
-app.get("/", async (req, res) => {
-  try {
-    res.sendFile(__dirname + "/index.html");
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error serving index.html");
-  }
-});
+})
 
 
+// Session middleware  for express
+app.use(sessionMiddleware)
 
+// middleware for connection to index.html file 
+app.get("/" , (req,res) => {
+      res.render("index")
+})
+
+app.set('view engine', 'ejs');
+app.set('view engine')
+// middle for connection to public folder
 app.use(express.static('public'))
 app.use(express.json());
 
 
+
+
+// Session middleware for socket io 
 io.use((socket, next) => {
-  sessionMiddleware(socket.request, socket.request.res, next);
-});
+  sessionMiddleware(socket.request , socket.request.res , next)
+})
 
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-
+// Socket io server connection and disconnection  
+io.on("connection" , (socket) => {
+  console.log("User connected:", socket.id )
+  
   const state = {
     userName: "",
     currentOrder: [],
@@ -66,7 +75,8 @@ io.on("connection", (socket) => {
         // Save the user's name and update the welcome message
         state.userName = message;
         await botMessage(
-          `Welcome to the ChatBot, ${state.userName}! Place an order\n 1. Typehere \n 99. Typehere \n 98. Typehere\n 97. Typehere\n 0. Cancel order`
+          `Welcome to the Nikki  Restaurant Chatbot App , ${state.userName}!\n
+          Follow this instruction\n 1. To place  order\n 99. checkout order\n 98. See order\n 97. See current order\n 0. Cancel order`
              
           );
       } else {
@@ -156,11 +166,19 @@ io.on("connection", (socket) => {
 
   socket.on("user-message", userMessage);
 
+//  socket io disconnection 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+    console.log("User disconnected:", socket.id)
   });
 });
 
-server.listen(3000, () => {
-  console.log("Listening on http://localhost:3000");
-});
+
+
+// Server port 
+server.listen(PORT, () => {
+  console.log( `listening on port ${PORT}`)
+})
+
+// const div = document.createElement("div")
+// div.classList.add('message') // add('message)
+// div.innerHTML =  `${message}`// text(`${message}`)
