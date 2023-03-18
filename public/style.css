@@ -1,11 +1,190 @@
+*{
+    padding: 0;
+    margin:0;
+    box-sizing: border-box;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
 
-body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;background-color: blue; }
+}
 
-#form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-#input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-#input:focus { outline: none; }
-#form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+body {
 
-#messages { list-style-type: none; margin: 0; padding: 0; }
-#messages > li { padding: 0.5rem 1rem; }
-#messages > li:nth-child(odd) { background: #efefef; }
+     background-image: url("./images/restaurant.jpg");
+     background-repeat: no-repeat;
+     background-size:cover;
+     background-attachment: fixed;
+     background-position: center;
+     height: 90vh;  
+ }
+
+.roomSection{
+    width:1000px;
+    background-image: url("./images/tasty-burger.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    margin:60px auto;
+    
+}
+
+#chatBox{
+  height: 400px;
+  padding: 16px;
+  display:flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+#form {
+     display: flex;
+     align-items:center;
+     justify-content: space-between;
+     padding:16px;
+  
+ }
+
+#input {
+    flex-grow: 1;
+    height: 40px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    font-size: 16px;
+}
+#input:focus { 
+    outline: none;
+ }
+ #input:hover{
+    background: rgb(182, 62, 255);
+    color: white;
+ }
+
+
+#form > button { 
+    margin-left: 16px;
+    height: 40px;
+    width:80px;
+    border:none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+ #form > button:hover  {
+      background-color:rgb(17, 209, 145)  ;
+      stroke:white;  
+    }     
+
+ svg{
+    fill:white;
+ }
+.message-outer-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    color: white;
+    height: 400px;
+  }
+  
+  .message-outer-container.user {
+    justify-content: flex-end;
+  }
+  
+  #bot {
+    padding: 15px 20px;
+    background:rgb(17, 209, 145) ;
+    border-radius: 5px;
+    max-width:30%;
+    float:left;
+    color:white;
+   
+  }
+  
+  #user {
+    padding:2rem;
+    background: rgb(182, 62, 255);
+    border-radius:5px;
+    text-align: center;
+    max-width:30%;
+    float: right;
+    color: white;
+  }
+  
+  .timestamp {
+    font-size: 0.65em;
+    color: white;
+    margin-top: 5px;
+    /* float: inline-start; */
+  }
+  
+  
+@media (max-width:992px){
+    body {
+        min-height: 80vh;
+    }
+    .roomSection {
+        width:700px;
+        margin:50px auto;
+}
+     
+
+#bot {
+    padding: 15px 20px;
+    max-width:40%;
+    
+ }
+   #user {
+    padding:2rem;
+    max-width:40%;
+  }
+}
+
+@media (max-width:768px){
+    body {
+       min-height: 70vh;
+   }
+   .roomSection{
+    width:600px;
+    margin:20px auto;
+}
+
+#bot {
+    padding: 15px 20px;
+    max-width:40%;
+    
+   
+  }
+   #user {
+    padding:2rem;
+    max-width:40%;
+  }
+}
+
+
+@media (max-width:600px){
+    body {
+        min-height: 40vh;
+    }
+    .roomSection{
+        width:400px;
+        margin:20px auto;
+} 
+#bot {
+    padding: 15px 20px;
+    max-width:60%;
+}
+   #user {
+    padding:2rem;
+    max-width:40%;
+  }
+}
+
+
+
+

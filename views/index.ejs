@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
-   <link rel="stylesheet" href="/style.css" class="">
-</head>
+    <title>Nikki Restaurant Chat Bot</title>
+   <link rel="stylesheet" href="style.css" class="">
+   <link rel="icon" type="image/png" sizes="42x42" href="./images/favicon-32x32.png">
+  </head>
   <body>
-
-     <ul id="chatBox"></ul>
-       <form id="form" action="">
+     <div class="roomSection">
+      <div id="chatBox"></div>
+       <form id="form">
           <input id="input" autocomplete="off" />
-          <button type="button" id="buttonEle">Send</button>
-     </form>
+          <button  id="buttonEle">
+            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 4L3 11L10 14L13 21L20 4Z" stroke="rgb(17, 209, 145)" stroke-width="1.5" stroke-linejoin="round"></path> </g></svg>
+          </button>
+      </form>
+     </div>
+  
     <!-- <script src="/socket.io/socket.io.js"></script> -->
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
@@ -18,14 +23,15 @@
         var socket = io();
 
         // Query DOM elements
-        var messages = document.querySelector("#chatBox");
-        var form = document.querySelector("#form");
-        var input = document.querySelector("#input");
+        var chatBox  = document.getElementById("chatBox");
+        var form = document.getElementById("form");
+        var input = document.getElementById("input");
         var sendBtn = document.getElementById("buttonEle")
         // Help function to append message to the chatbot
       function Message(message , sender){
           const messageElement = document.createElement("div");
-          messageElement.classList.add("message-text",sender);
+          messageElement.className = "message-text";
+          messageElement.id = sender
           messageElement.textContent = message;
 
 
@@ -33,27 +39,32 @@
         const timestamp = new Date().toLocaleTimeString()
          // create span element for timestamp
          const timestampElement = document.createElement("span")
-         timestampElement.classList.add("timestamp")
+         timestampElement.className = "timestamp"
          timestampElement.textContent = timestamp;
   
 
         const messageContainer = document.createElement("div")
-        messageContainer.classList.add("message-container");
+        const messageOutContainer = document.createElement("div");
+        messageContainer.className = "message-container" + sender;
+        messageOutContainer.className = "message-outer-container" + sender;
+        messageElement.innerHTML = message.replace(/\n/g, "<br>")
+        messageOutContainer.appendChild(messageContainer)
         messageContainer.appendChild(messageElement)
         messageContainer.appendChild(timestampElement)
-        chatBox.appendChild(messageContainer);
+        chatBox.appendChild(messageOutContainer);
         // Chat Box scrolling Effect 
-        chatBox.scrollTop = chatBox.scrollHeight
-    }
+        chatBox.scrollTop = chatBox.scrollHeight    
+}
 
+  
 // Handle sending messages
 function sendMassage(){
-        const message =  input.value.trim();
+        const message =  input.value;
         if(message === ""){
           return;
         }
 
-        Message(message, "user");
+      Message(message, "user");
         socket.emit("user-message", message)
         input.value = "";
 }
@@ -72,7 +83,6 @@ socket.on("bot-message", (message) => {
  
 
    sendBtn.addEventListener("click" ,sendMassage)
-
    input.addEventListener("keydown" , (e) => {
    if(e.key === "Enter"){
     e.preventDefault()
@@ -80,7 +90,7 @@ socket.on("bot-message", (message) => {
     }
    })
 
-        // Socket io form event  from socket io document
+  //       // Socket io form event  from socket io document
   //       form.addEventListener('submit', function(e) {
   //       e.preventDefault();
   //       if (input.value) {
@@ -90,13 +100,7 @@ socket.on("bot-message", (message) => {
   // });
 
 
-  // socket io   From socket io document
-  // socket.on('chat message', function(msg) {
-  //   var item = document.createElement('li');
-  //   item.textContent = msg;
-  //   messages.appendChild(item);
-  //   window.scrollTo(0, document.body.scrollHeight);
-  // });
+ 
    </script>
   </body>
 </html>
