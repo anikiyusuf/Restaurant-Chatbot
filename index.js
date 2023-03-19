@@ -32,12 +32,21 @@ app.set('view  engine')
 app.use(express.static('public'))
 app.use(express.json());
 
-const fastFoods = {
+const nikkiFoods = {
     101: "Fried Chicken",
     102: "Burger",
     103: "Pizza",
     104: "Hot Dog",
     105: "French Fries",
+    106:"coleslaw",
+    107: "Salad Pasta",
+    109:"Fish",
+    110:"Beans And Rice",
+    111:"Beef Ever Meatloaf",
+    112:"Tortilla Soup Recipes",
+    113:"Tilapia",
+    114:"Gumbo",
+    115:"German Salad"
   };
   
 
@@ -114,14 +123,14 @@ io.on("connection" , (socket) => {
         socket.request.session[deviceId].userName = userName;
         socket.emit(
           "bot-message",
-          `Welcome to the Fast Food ChatBot, ${userName}!\n1. Place an order\n99. Checkout order\n98. Order history\n97. Current order\n0. Cancel order`
+          `Welcome to the Fast Food ChatBot, ${userName}!\n1. Place an order\n99. Checkout order\n98. See Order history\n97.  See Current order\n0. Cancel order`
         );
       } else {
         switch (message) {
           case "1":
             // Generate the list of items dynamically
-            const itemOptions = Object.keys(fastFoods)
-              .map((item) => `${item}. ${fastFoods[item]}`)
+            const itemOptions = Object.keys(nikkiFoods)
+              .map((item) => `${item}. ${nikkiFoods[item]}`)
               .join("\n");
             socket.emit(
               "bot-message",
@@ -161,7 +170,7 @@ io.on("connection" , (socket) => {
                 } else {
                   socket.emit(
                     "bot-message",
-                    `You don't have any items in your current order yet. Type '1' to see the menu.`
+                    `You don't have any items in your current order yet. Type 1 to see the menu.`
                   );
                 }  break;
                 case "98":
@@ -182,7 +191,7 @@ io.on("connection" , (socket) => {
                   } else {
                     socket.emit(
                       "bot-message",
-                      `There is no order history yet. Type '1' to see the menu.`
+                      `There is no order history yet. Type 1 to see the menu.`
                     );
                   }   break;
                   case "0":
@@ -191,7 +200,7 @@ io.on("connection" , (socket) => {
                     if (currentOrder.length === 0 && orderHistory.length === 0) {
                       socket.emit(
                         "bot-message",
-                        `There is nothing to cancel. Type '1' to see the menu.`
+                        `There is nothing to cancel. Type 1 to see the menu.`
                       );
                     } else {
                       socket.request.session[deviceId].currentOrder = [];
@@ -204,18 +213,18 @@ io.on("connection" , (socket) => {
                     default:
                       // Add the item to the current order
                       const itemNumber = parseInt(message);
-                      if (!isNaN(itemNumber) && fastFoods[itemNumber]) {
+                      if (!isNaN(itemNumber) && nikkiFoods[itemNumber]) {
                         socket.request.session[deviceId].currentOrder.push(
-                          fastFoods[itemNumber]
+                          nikkiFoods[itemNumber]
                         );
                         socket.emit(
                           "bot-message",
-                          `You have added ${fastFoods[itemNumber]} to your current order\n Add another order from the menu\n Type '97' to see your current order\n '98' to see order history\n '99' to checkout\n '0' to cancel your order`
+                          `You have added ${nikkiFoods[itemNumber]} to your current order\n Add another order from the menu\n Type 97 to see your current order\n 98 to see order history\n 99 to checkout\n 0 to cancel your order`
                         );
                       } else {
                         socket.emit(
                           "bot-message",
-                          `Invalid input. Type '1' to see the menu.`
+                          `Invalid input. Type 1 to see the menu.`
                         );
                       }
                       break;
